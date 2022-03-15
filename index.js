@@ -26,9 +26,15 @@ const hardCodedPhonebooks = [
 ];
 
 app.get("/api/persons", (req, res) => {
-  console.dir(req);
-  console.dir(res);
   res.json(hardCodedPhonebooks);
+});
+
+app.get("/info", (req, res) => {
+  const template = `
+  <p>Phonebook has info for ${hardCodedPhonebooks.length} people</p>
+  <p>${new Date()}</p>
+  `;
+  res.send(template);
 });
 
 const PORT = 3001;
