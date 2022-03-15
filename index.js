@@ -60,10 +60,26 @@ app.delete("/api/persons/:id", (req, res) => {
 });
 
 app.post("/api/persons", (req, res) => {
-  if (!req.body) res.status(400).json({ err: "Body content Missing" });
   const id = Math.round(Math.random() * 999999);
   const { name, number } = req.body;
+
+  //filters
+  if (!name || !number)
+    return res.status(400).json({ err: "Body content Missing" });
+
+  let alreadyExist = false;
+  persons.forEach((person) => {
+    if (person.name === name) {
+      alreadyExist = true;
+    }
+  });
+
+  if (alreadyExist) {
+    return res.status(400).json({ err: `Name Must Be Unique` });
+  }
   console.log(id, name, number);
+
+  //Add person to persons
   const person = {
     id,
     name,
