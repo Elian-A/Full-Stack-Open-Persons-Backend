@@ -2,7 +2,7 @@ const express = require("express");
 
 const app = express();
 
-const hardCodedPhonebooks = [
+const persons = [
   {
     id: 1,
     name: "Arto Hellas",
@@ -26,15 +26,26 @@ const hardCodedPhonebooks = [
 ];
 
 app.get("/api/persons", (req, res) => {
-  res.json(hardCodedPhonebooks);
+  res.json(persons);
 });
 
 app.get("/info", (req, res) => {
   const template = `
-  <p>Phonebook has info for ${hardCodedPhonebooks.length} people</p>
+  <p>Phonebook has info for ${persons.length} people</p>
   <p>${new Date()}</p>
   `;
   res.send(template);
+});
+
+app.get("/api/persons/:id", (req, res) => {
+  const id = Number(req.params.id);
+  const person = persons.find((person) => person.id === id);
+
+  if (person) {
+    res.json(person);
+  } else {
+    res.status(404).end();
+  }
 });
 
 const PORT = 3001;
