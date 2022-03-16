@@ -63,42 +63,36 @@ app.delete("/api/persons/:id", (req, res) => {
   res.status(204).end();
 });
 
-app.post(
-  "/api/persons",
-  morgan(
-    ":method :url :status :res[content-length] - :response-time ms :object"
-  ),
-  (req, res) => {
-    const id = Math.round(Math.random() * 999999);
-    const { name, number } = req.body;
+app.post("/api/persons", morgan(":object"), (req, res) => {
+  const id = Math.round(Math.random() * 999999);
+  const { name, number } = req.body;
 
-    //filters
-    if (!name || !number)
-      return res.status(400).json({ err: "Body content Missing" });
+  //filters
+  if (!name || !number)
+    return res.status(400).json({ err: "Body content Missing" });
 
-    let alreadyExist = false;
-    persons.forEach((person) => {
-      if (person.name === name) {
-        alreadyExist = true;
-      }
-    });
-
-    if (alreadyExist) {
-      return res.status(400).json({ err: `Name Must Be Unique` });
+  let alreadyExist = false;
+  persons.forEach((person) => {
+    if (person.name === name) {
+      alreadyExist = true;
     }
-    console.log(id, name, number);
+  });
 
-    //Add person to persons
-    const person = {
-      id,
-      name,
-      number,
-    };
-
-    persons = persons.concat(person);
-    res.json(person);
+  if (alreadyExist) {
+    return res.status(400).json({ err: `Name Must Be Unique` });
   }
-);
+  console.log(id, name, number);
+
+  //Add person to persons
+  const person = {
+    id,
+    name,
+    number,
+  };
+
+  persons = persons.concat(person);
+  res.json(person);
+});
 
 const PORT = 3001;
 app.listen(PORT, () => console.log(`API Running on Port ${PORT}`));
