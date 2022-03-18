@@ -28,14 +28,10 @@ app.get("/info", (req, res) => {
 });
 
 app.get("/api/persons/:id", (req, res) => {
-  const id = Number(req.params.id);
-  const person = persons.find((person) => person.id === id);
-
-  if (person) {
-    res.json(person);
-  } else {
-    res.status(404).end();
-  }
+  const id = req.params.id;
+  Person.findById(id)
+    .then((person) => res.json(person))
+    .catch((err) => console.error(`Error: ${err}`));
 });
 
 app.delete("/api/persons/:id", (req, res) => {
