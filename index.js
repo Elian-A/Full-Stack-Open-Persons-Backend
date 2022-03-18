@@ -35,13 +35,14 @@ app.get("/api/persons/:id", (req, res) => {
 });
 
 app.delete("/api/persons/:id", (req, res) => {
-  const id = Number(req.params.id);
+  const id = req.params.id;
 
-  if (!persons.filter((person) => person.id === id)) res.status(404).end();
-
-  persons = persons.filter((person) => person.id !== id);
-  console.log(persons);
-  res.status(204).end();
+  Person.findByIdAndDelete(id)
+    .then((person) => {
+      console.log(`Deleted ${person?.name}`);
+      res.status(204).end();
+    })
+    .catch((err) => console.error(`Error: ${err}`));
 });
 
 app.post("/api/persons", morgan(":object"), (req, res) => {
