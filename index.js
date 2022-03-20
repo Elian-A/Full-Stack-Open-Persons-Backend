@@ -76,7 +76,11 @@ app.post("/api/persons", morgan(":object"), (req, res, next) => {
 app.put("/api/persons/:id", (req, res, next) => {
   const id = req.params.id;
   const { name, number } = req.body;
-  Person.findByIdAndUpdate(id, { name, number }, { new: true })
+  Person.findByIdAndUpdate(
+    id,
+    { name, number },
+    { new: true, runValidators: true, context: "query" }
+  )
     .then((newPerson) => {
       console.log(newPerson);
       res.json(newPerson);

@@ -1,10 +1,11 @@
 const errorHandler = (err, req, res, next) => {
-  console.log(err);
+  console.log(err.name);
 
   if (err.name === "CastError") {
     res.status(400).send({ err });
   }
-  next();
+
+  if (err.name === "ValidationError") res.status(400).send({ err });
 };
 
 module.exports = errorHandler;

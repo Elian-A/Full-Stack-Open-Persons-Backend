@@ -1,7 +1,10 @@
 const { Schema, model } = require("mongoose");
 
 const personSchema = new Schema({
-  name: String,
+  name: {
+    type: String,
+    minlength: 3,
+  },
   number: String,
 });
 
