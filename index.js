@@ -6,6 +6,7 @@ const errorHandler = require("./middlewares/errorHandler");
 const routeNotFound = require("./middlewares/routeNotFound");
 const app = express();
 
+app.use(express.static("build"));
 app.use(express.json());
 app.use(cors());
 
